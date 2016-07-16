@@ -1,0 +1,54 @@
+/*
+ * This  is part of superior-game-library and is distributed under the following license:
+ *  "THE BEER-WARE LICENSE" (Revision 42):
+ *  Malte Heinzelmann wrote this file.  As long as you retain this notice you can
+ *  do whatever you want with this stuff. If we meet some day, and you think this
+ *  stuff is worth it, you can buy me a beer in return.          malte@hnzlmnn.de
+ */
+
+group 'de.hnzlmnn.sgl'
+version "0.0.1"
+
+buildscript {
+    ext.gdxVersion = "1.9.3"
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.6
+
+File deployPath = file("../${rootProject.name}-maven/")
+mainClassName = 'de.hnzlmnn.sgl.Main'
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.6.2'
+    testCompile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.6.2'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: "file://${deployPath.absolutePath}")
+        pom.project {
+            groupId 'de.hnzlmnn.sgl'
+            artifactId "${rootProject.name}"
+            version "${version}"
+        }
+    }
+}

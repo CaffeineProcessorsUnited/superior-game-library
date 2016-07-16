@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sgl.iml" filepath="$PROJECT_DIR$/.idea/modules/sgl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sgl_main.iml" filepath="$PROJECT_DIR$/.idea/modules/sgl_main.iml" group="sgl" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sgl_test.iml" filepath="$PROJECT_DIR$/.idea/modules/sgl_test.iml" group="sgl" />
+    </modules>
+  </component>
+</project>
