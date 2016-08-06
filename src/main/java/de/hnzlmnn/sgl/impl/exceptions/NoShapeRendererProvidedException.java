@@ -6,14 +6,15 @@
  *  stuff is worth it, you can buy me a beer in return.          malte@hnzlmnn.de
  */
 
-package de.hnzlmnn.sgl;
+package de.hnzlmnn.sgl.impl.exceptions;
+
+import de.hnzlmnn.sgl.exceptions.SGLException;
 
 /**
  * @author Malte Heinzelmann
  */
-public class Main {
-    public static void main(String[] args) {
-        System.err.println("You can't run this library!");
-        System.exit(1);
+public class NoShapeRendererProvidedException extends SGLException {
+    public NoShapeRendererProvidedException() {
+        super("No ShapeRenderer was provided");
     }
 }

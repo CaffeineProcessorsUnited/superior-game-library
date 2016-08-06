@@ -6,14 +6,18 @@
  *  stuff is worth it, you can buy me a beer in return.          malte@hnzlmnn.de
  */
 
-package de.hnzlmnn.sgl;
+package de.hnzlmnn.sgl.impl.ui.elements;
+
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import de.hnzlmnn.sgl.ui.elements.UIElement;
 
 /**
  * @author Malte Heinzelmann
  */
-public class Main {
-    public static void main(String[] args) {
-        System.err.println("You can't run this library!");
-        System.exit(1);
+public class SGLTextButton extends UIElement<TextButton> {
+
+
+    public SGLTextButton(String text) {
+
     }
 }

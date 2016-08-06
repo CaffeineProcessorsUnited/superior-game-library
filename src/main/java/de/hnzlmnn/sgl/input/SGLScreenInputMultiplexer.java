@@ -9,7 +9,7 @@
 package de.hnzlmnn.sgl.input;
 
 import com.badlogic.gdx.InputProcessor;
-import de.hnzlmnn.sgl.screens.SGLScreen;
+import de.hnzlmnn.sgl.ui.screens.SGLScreen;
 
 import java.util.HashMap;
 import java.util.HashSet;

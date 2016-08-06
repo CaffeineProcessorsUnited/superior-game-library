@@ -6,14 +6,15 @@
  *  stuff is worth it, you can buy me a beer in return.          malte@hnzlmnn.de
  */
 
-package de.hnzlmnn.sgl;
+package de.hnzlmnn.sgl.impl.exceptions;
+
+import de.hnzlmnn.sgl.exceptions.SGLException;
 
 /**
  * @author Malte Heinzelmann
  */
-public class Main {
-    public static void main(String[] args) {
-        System.err.println("You can't run this library!");
-        System.exit(1);
+public class RootElementNotProvidedException extends SGLException {
+    public RootElementNotProvidedException(Class<?> c) {
+        super("The root element of type " + c.getName() + " wasn't provided!");
     }
 }

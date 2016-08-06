@@ -10,15 +10,18 @@ package de.hnzlmnn.sgl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.hnzlmnn.sgl.impl.exceptions.NoShapeRendererProvidedException;
 import de.hnzlmnn.sgl.input.SGLScreenInputMultiplexer;
 import de.hnzlmnn.sgl.messages.MessageBasedGame;
-import de.hnzlmnn.sgl.screens.SGLRootScreen;
+import de.hnzlmnn.sgl.ui.interfaces.ShapeRendererProvider;
+import de.hnzlmnn.sgl.ui.screens.SGLRootScreen;
 
 /**
  * @author Malte Heinzelmann
  */
-public abstract class SGLGame extends MessageBasedGame {
+public abstract class SGLGame extends MessageBasedGame implements ShapeRendererProvider {
 
     protected final SGLScreenInputMultiplexer screenInput;
     protected final InputMultiplexer multiplexer;
@@ -76,5 +79,9 @@ public abstract class SGLGame extends MessageBasedGame {
     }
 
     public abstract Viewport createViewport();
+
+    public ShapeRenderer getShapeRenderer() {
+        throw new NoShapeRendererProvidedException();
+    };
 
 }

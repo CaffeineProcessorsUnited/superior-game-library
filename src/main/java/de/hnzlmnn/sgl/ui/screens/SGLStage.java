@@ -6,14 +6,16 @@
  *  stuff is worth it, you can buy me a beer in return.          malte@hnzlmnn.de
  */
 
-package de.hnzlmnn.sgl;
+package de.hnzlmnn.sgl.ui.screens;
+
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
  * @author Malte Heinzelmann
  */
-public class Main {
-    public static void main(String[] args) {
-        System.err.println("You can't run this library!");
-        System.exit(1);
+public class SGLStage extends Stage {
+    public void render(float delta) {
+        act(delta);
+        draw();
     }
 }
