@@ -20,7 +20,12 @@ public abstract class UIElement<T extends Actor> extends Actor implements RootEl
     protected T rootElement;
 
     public UIElement(Class<T> c) {
+        this(c, null);
+    }
+
+    public UIElement(Class<T> c, T e) {
         rootElementClass = c;
+        rootElement = e;
     }
 
     @Override

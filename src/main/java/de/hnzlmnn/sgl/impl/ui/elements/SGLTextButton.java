@@ -8,6 +8,7 @@
 
 package de.hnzlmnn.sgl.impl.ui.elements;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import de.hnzlmnn.sgl.ui.elements.UIElement;
 
@@ -17,7 +18,7 @@ import de.hnzlmnn.sgl.ui.elements.UIElement;
 public class SGLTextButton extends UIElement<TextButton> {
 
 
-    public SGLTextButton(String text) {
-
+    public SGLTextButton(String text, Skin skin) {
+        super(TextButton.class, new TextButton(text, skin));
     }
 }
