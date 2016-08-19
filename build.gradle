@@ -6,8 +6,8 @@
  *  stuff is worth it, you can buy me a beer in return.          malte@hnzlmnn.de
  */
 
-group 'de.hnzlmnn.sgl'
-version "0.0.1"
+group 'de.caffeineaddicted.sgl'
+version "0.1.0"
 
 buildscript {
     ext.gdxVersion = "1.9.3"
@@ -22,8 +22,8 @@ apply plugin: 'application'
 
 sourceCompatibility = 1.6
 
-File deployPath = file("../${rootProject.name}-maven/")
-mainClassName = 'de.hnzlmnn.sgl.Main'
+File deployPath = file("../maven/")
+mainClassName = 'de.caffeineaddicted.sgl.Main'
 sourceSets {
     main.java.srcDirs += 'src/main/java'
     test.java.srcDirs += 'src/test/java'
@@ -40,15 +40,43 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: "file://${deployPath.absolutePath}")
-        pom.project {
-            groupId 'de.hnzlmnn.sgl'
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            groupId 'de.caffeineaddicted'
             artifactId "${rootProject.name}"
             version "${version}"
+        }
+        mavenJavaSources(MavenPublication) {
+            artifact sourcesJar
+
+            groupId 'de.caffeineaddicted'
+            artifactId "${rootProject.name}"
+            version "${version}"
+        }
+    }
+    repositories {
+        maven {
+            url "file://${deployPath.absolutePath}"
         }
     }
 }

@@ -8,11 +8,11 @@
 
 package tests;
 
-import de.hnzlmnn.sgl.impl.types.SGLString;
-import de.hnzlmnn.sgl.types.SGLObject;
-import de.hnzlmnn.sgl.types.SGLType;
-import de.hnzlmnn.sgl.types.VarUpdater;
-import de.hnzlmnn.sgl.types.VarUpdaterData;
+import de.caffeineaddicted.sgl.impl.types.SGLString;
+import de.caffeineaddicted.sgl.types.SGLObject;
+import de.caffeineaddicted.sgl.types.SGLType;
+import de.caffeineaddicted.sgl.types.VarUpdater;
+import de.caffeineaddicted.sgl.types.VarUpdaterData;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;

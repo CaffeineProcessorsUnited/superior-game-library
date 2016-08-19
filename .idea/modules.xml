@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sgl.iml" filepath="$PROJECT_DIR$/.idea/modules/sgl.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sgl_main.iml" filepath="$PROJECT_DIR$/.idea/modules/sgl_main.iml" group="sgl" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sgl_test.iml" filepath="$PROJECT_DIR$/.idea/modules/sgl_test.iml" group="sgl" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superior-game-library.iml" filepath="$PROJECT_DIR$/.idea/modules/superior-game-library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superior-game-library_main.iml" filepath="$PROJECT_DIR$/.idea/modules/superior-game-library_main.iml" group="superior-game-library" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superior-game-library_test.iml" filepath="$PROJECT_DIR$/.idea/modules/superior-game-library_test.iml" group="superior-game-library" />
     </modules>
   </component>
 </project>
