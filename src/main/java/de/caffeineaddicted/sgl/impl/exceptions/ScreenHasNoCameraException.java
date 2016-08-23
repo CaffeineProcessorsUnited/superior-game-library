@@ -6,12 +6,15 @@
  *  stuff is worth it, you can buy me a beer in return.          malte@hnzlmnn.de
  */
 
-package de.caffeineaddicted.sgl.ui.screens;
+package de.caffeineaddicted.sgl.impl.exceptions;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import de.caffeineaddicted.sgl.exceptions.SGLException;
 
 /**
  * @author Malte Heinzelmann
  */
-public class SGLStage extends Stage {
+public class ScreenHasNoCameraException extends SGLException {
+    public ScreenHasNoCameraException() {
+        super("This screen has no camera!");
+    }
 }

@@ -10,26 +10,25 @@ package de.caffeineaddicted.sgl.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import de.caffeineaddicted.sgl.SGL;
 import de.caffeineaddicted.sgl.SGLGame;
 import de.caffeineaddicted.sgl.impl.exceptions.ScreenNotLoadedException;
+import de.caffeineaddicted.sgl.messages.Message;
 
 import java.util.*;
 
 /**
  * @author Malte Heinzelmann
  */
-public class SGLRootScreen implements Screen {
+public class SGLRootScreen<T extends SGLGame> implements Screen {
 
-    private SGLGame game;
-
-    ;
     private Map<Class<? extends SGLScreen>, SGLScreen> screens;
     private Map<ZINDEX, Class<? extends SGLScreen>> activeScreens;
     private boolean renderWhilePasued = true;
     private boolean paused = false;
 
-    public SGLRootScreen(SGLGame game) {
-        this.game = game;
+    public SGLRootScreen() {
         screens = new HashMap<Class<? extends SGLScreen>, SGLScreen>();
         activeScreens = new HashMap<ZINDEX, Class<? extends SGLScreen>>();
     }
@@ -53,25 +52,27 @@ public class SGLRootScreen implements Screen {
 
     public void showScreen(Class<? extends SGLScreen> screenclass, ZINDEX zindex) {
         hideScreen(zindex);
-        SGLScreen screen;
-        if ((screen = screens.get(screenclass)) != null) {
+        SGLScreen screen = screens.get(screenclass);
+        if (screen != null) {
             activeScreens.put(zindex, screenclass);
-            game.debug("showing screen " + screenclass.getSimpleName() + " on " + zindex.name());
+            SGL.game().debug("showing screen " + screenclass.getSimpleName() + " on " + zindex.name());
             screen.show();
+            screen.resume();
             screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         } else {
-            game.error("The screen " + screenclass.getSimpleName() + " is not loaded! Load it before u show it!");
+            SGL.game().error("The screen " + screenclass.getSimpleName() + " is not loaded! Load it before u show it!");
         }
     }
 
     public void hideScreen(ZINDEX zindex) {
         Class<? extends SGLScreen> oldScreenclass;
         if ((oldScreenclass = activeScreens.get(zindex)) != null) {
-            SGLScreen oldScreen;
-            if ((oldScreen = screens.get(oldScreenclass)) != null) {
-                game.debug("hiding screen " + oldScreenclass.getSimpleName() + " on " + zindex.name());
+            SGLScreen oldScreen = screens.get(oldScreenclass);
+            if (oldScreen != null) {
+                SGL.game().debug("hiding screen " + oldScreenclass.getSimpleName() + " on " + zindex.name());
                 activeScreens.put(zindex, null);
                 oldScreen.hide();
+                oldScreen.pause();
             }
         }
     }
@@ -95,18 +96,17 @@ public class SGLRootScreen implements Screen {
 
     public <T extends SGLScreen> T get(Class<T> screenclass) {
         SGLScreen screen = screens.get(screenclass);
-        if (screenclass.isInstance(screen)) {
+        if (ClassReflection.isInstance(screenclass, screen)) {
             return (T) screen;
         }
         throw new ScreenNotLoadedException(screenclass);
     }
 
     private void renderIfNotNull(ZINDEX zindex, float delta) {
-        Class<? extends SGLScreen> screenclass;
-        if ((screenclass = activeScreens.get(zindex)) != null) {
-            SGLScreen screen;
-            if ((screen = screens.get(screenclass)) != null) {
-                //game.debug("RootScreen:reder", "rendering " + screenclass.getSimpleName() + " on " + zindex.name());
+        Class<? extends SGLScreen> screenclass = activeScreens.get(zindex);
+        if (screenclass != null) {
+            SGLScreen screen = screens.get(screenclass);
+            if (screen != null) {
                 screen.render(delta);
             }
         }
@@ -136,15 +136,13 @@ public class SGLRootScreen implements Screen {
             return;
         }
         for (ZINDEX zindex : ZINDEX.asSortedArray()) {
-            //game.debug("Rendering screen: " + zindex.name());
             renderIfNotNull(zindex, delta);
         }
-        //game.debug("done rendering");
     }
 
     @Override
     public void resize(int width, int height) {
-        // why should i resize not drawn screens? they get resized when the are shown
+        // why should I resize not drawn screens? they get resized when the are shown
         for (ZINDEX zindex : ZINDEX.asSortedArray()) {
             Class<? extends SGLScreen> screenclass;
             if ((screenclass = activeScreens.get(zindex)) != null) {
@@ -160,7 +158,7 @@ public class SGLRootScreen implements Screen {
     public void pause() {
         // we paused the game
         paused = true;
-        game.debug("U can't pause root!");
+        SGL.game().debug("U can't pause root!");
         for (SGLScreen screen : screens.values()) {
             screen.pause();
         }
@@ -170,7 +168,7 @@ public class SGLRootScreen implements Screen {
     public void resume() {
         // we resumed the game
         paused = false;
-        game.debug("Unleash the kraken");
+        SGL.game().debug("Unleash the kraken");
         for (SGLScreen screen : screens.values()) {
             screen.resume();
         }

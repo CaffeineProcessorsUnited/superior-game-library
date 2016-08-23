@@ -6,18 +6,13 @@
  *  stuff is worth it, you can buy me a beer in return.          malte@hnzlmnn.de
  */
 
-package de.caffeineaddicted.sgl.interfaces;
+package de.caffeineaddicted.sgl.impl.messages;
 
 import de.caffeineaddicted.sgl.messages.Message;
-import de.caffeineaddicted.sgl.messages.Bundle;
 
 /**
  * @author Malte Heinzelmann
  */
-public interface MessageReceiver {
-    void onMessageReceived(Message message);
+public class DisposeMessage extends Message {
 
-    void onMessageReceived(Bundle bundle);
-
-    void onMessageReceived(Message message, Bundle bundle);
 }

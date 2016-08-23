@@ -11,5 +11,23 @@ package de.caffeineaddicted.sgl.messages;
 /**
  * @author Malte Heinzelmann
  */
-public interface Message {
+public abstract class Message extends Bundle {
+
+    public Message() {
+        this(null);
+    }
+
+    public Message(Bundle bundle) {
+        super(bundle);
+    }
+
+    public Bundle put(String key, Object value) {
+        super.put(key, value);
+        return this;
+    }
+
+    @Override
+    public final String toString() {
+        return this.getClass().getSimpleName();
+    }
 }

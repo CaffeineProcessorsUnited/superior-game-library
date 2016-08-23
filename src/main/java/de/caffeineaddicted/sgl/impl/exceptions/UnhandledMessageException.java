@@ -6,12 +6,16 @@
  *  stuff is worth it, you can buy me a beer in return.          malte@hnzlmnn.de
  */
 
-package de.caffeineaddicted.sgl.ui.screens;
+package de.caffeineaddicted.sgl.impl.exceptions;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import de.caffeineaddicted.sgl.exceptions.SGLException;
+import de.caffeineaddicted.sgl.messages.Message;
 
 /**
  * @author Malte Heinzelmann
  */
-public class SGLStage extends Stage {
+public class UnhandledMessageException extends SGLException {
+    public UnhandledMessageException(Message message) {
+        super("The receiveMessage type " + message.getClass().getSimpleName() + " is unhandled!");
+    }
 }

@@ -10,40 +10,51 @@ package de.caffeineaddicted.sgl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.caffeineaddicted.sgl.impl.exceptions.ProvidedObjectClassMismatchException;
+import de.caffeineaddicted.sgl.impl.exceptions.ProvidedObjectIsNullException;
 import de.caffeineaddicted.sgl.input.SGLScreenInputMultiplexer;
+import de.caffeineaddicted.sgl.interfaces.ApplicationConfigurationProvider;
+import de.caffeineaddicted.sgl.interfaces.Provider;
 import de.caffeineaddicted.sgl.messages.MessageBasedGame;
-import de.caffeineaddicted.sgl.ui.interfaces.ShapeRendererProvider;
 import de.caffeineaddicted.sgl.ui.screens.SGLRootScreen;
-import de.caffeineaddicted.sgl.impl.exceptions.NoShapeRendererProvidedException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Malte Heinzelmann
  */
-public abstract class SGLGame extends MessageBasedGame implements ShapeRendererProvider {
+public abstract class SGLGame extends MessageBasedGame implements Provider, ApplicationConfigurationProvider {
 
-    protected final SGLScreenInputMultiplexer screenInput;
     protected final InputMultiplexer multiplexer;
-    protected final SGLRootScreen rootScreen;
+    private final Map<Class<?>, Object> providing = new HashMap<Class<?>, Object>();
 
     public SGLGame() {
-        screenInput = new SGLScreenInputMultiplexer();
+        SGL.game(this);
+        supply(SGLScreenInputMultiplexer.class, new SGLScreenInputMultiplexer());
+        supply(SGLRootScreen.class, new SGLRootScreen());
         multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(screenInput);
-        rootScreen = new SGLRootScreen(this);
+        multiplexer.addProcessor(provide(SGLScreenInputMultiplexer.class));
     }
 
     public void create() {
         Gdx.input.setInputProcessor(multiplexer);
-        setScreen(rootScreen);
+        setScreen(provide(SGLRootScreen.class));
+        initGame();
         initScreens();
+        startGame();
     }
+
+    protected abstract void initGame();
 
     protected abstract void initScreens();
 
+    protected abstract void startGame();
+
     public String getLogTag(String sub) {
-        return "SGLGame" + (!sub.isEmpty() ? ":" + sub : "");
+        return "SGL" + (!sub.isEmpty() ? ":" + sub : "");
     }
 
     public void log(String message) {
@@ -80,8 +91,24 @@ public abstract class SGLGame extends MessageBasedGame implements ShapeRendererP
 
     public abstract Viewport createViewport();
 
-    public ShapeRenderer getShapeRenderer() {
-        throw new NoShapeRendererProvidedException();
-    };
+    protected final <T> void supply(Class<T> c, T o) {
+        providing.put(c, o);
+    }
 
+    @Override
+    public final <T> boolean provides(Class<T> key) {
+        return providing.containsKey(key);
+    }
+
+    @Override
+    public final <T> T provide(Class<T> key) {
+        Object o = providing.get(key);
+        if (o == null) {
+            throw new ProvidedObjectIsNullException(key);
+        }
+        if (ClassReflection.isInstance(key, o)) {
+            return (T) o;
+        }
+        throw new ProvidedObjectClassMismatchException(key, o);
+    }
 }

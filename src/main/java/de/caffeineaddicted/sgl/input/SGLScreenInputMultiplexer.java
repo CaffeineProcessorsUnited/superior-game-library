@@ -9,6 +9,8 @@
 package de.caffeineaddicted.sgl.input;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector3;
+import de.caffeineaddicted.sgl.SGL;
 import de.caffeineaddicted.sgl.ui.screens.SGLScreen;
 
 import java.util.HashMap;
@@ -27,7 +29,7 @@ public class SGLScreenInputMultiplexer implements InputProcessor {
     }
 
     public void addProcessor(SGLScreen screen, InputProcessor processor) {
-        screen.game.debug(screen.getClass().getSimpleName() + " added Processor " + processor.getClass().getSimpleName());
+        SGL.game().debug(screen.getClass().getSimpleName() + " added Processor " + processor.getClass().getSimpleName());
         if (screen == null) throw new NullPointerException("screen cannot be null");
         if (processor == null) throw new NullPointerException("processor cannot be null");
         processors.put(screen, processor);
@@ -58,62 +60,88 @@ public class SGLScreenInputMultiplexer implements InputProcessor {
     }
 
     public boolean keyDown(int keycode) {
-        Set<SGLScreen> k = new HashSet(processors.keySet());
-        for (SGLScreen s : k)
-            if (s.isVisible() && processors.get(s) != null) processors.get(s).keyDown(keycode);
+        Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
+        for (SGLScreen s : k) {
+            if (s.isVisible() && processors.get(s) != null) {
+                processors.get(s).keyDown(keycode);
+            }
+        }
         return false;
     }
 
     public boolean keyUp(int keycode) {
-        Set<SGLScreen> k = new HashSet(processors.keySet());
-        for (SGLScreen s : k)
-            if (s.isVisible() && processors.get(s) != null) processors.get(s).keyUp(keycode);
+        Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
+        for (SGLScreen s : k) {
+            if (s.isVisible() && processors.get(s) != null) {
+                processors.get(s).keyUp(keycode);
+            }
+        }
         return false;
     }
 
     public boolean keyTyped(char character) {
-        Set<SGLScreen> k = new HashSet(processors.keySet());
-        for (SGLScreen s : k)
-            if (s.isVisible() && processors.get(s) != null) processors.get(s).keyTyped(character);
+        Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
+        for (SGLScreen s : k) {
+            if (s.isVisible() && processors.get(s) != null) {
+                processors.get(s).keyTyped(character);
+            }
+        }
         return false;
     }
 
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Set<SGLScreen> k = new HashSet(processors.keySet());
-        for (SGLScreen s : k)
-            if (s.isVisible() && processors.get(s) != null)
-                processors.get(s).touchDown(screenX, screenY, pointer, button);
+        Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
+        for (SGLScreen s : k) {
+            if (s.isVisible() && processors.get(s) != null) {
+                Vector3 unprojected = s.unproject(new Vector3(screenX, screenY, 0));
+                processors.get(s).touchDown((int) unprojected.x, (int) unprojected.y, pointer, button);
+            }
+        }
         return false;
     }
 
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Set<SGLScreen> k = new HashSet(processors.keySet());
-        for (SGLScreen s : k)
-            if (s.isVisible() && processors.get(s) != null)
-                processors.get(s).touchUp(screenX, screenY, pointer, button);
+        Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
+        for (SGLScreen s : k) {
+            if (s.isVisible() && processors.get(s) != null) {
+                Vector3 unprojected = s.unproject(new Vector3(screenX, screenY, 0));
+                processors.get(s).touchUp((int) unprojected.x, (int) unprojected.y, pointer, button);
+            }
+        }
         return false;
     }
 
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        Set<SGLScreen> k = new HashSet(processors.keySet());
-        for (SGLScreen s : k)
-            if (s.isVisible() && processors.get(s) != null) processors.get(s).touchDragged(screenX, screenY, pointer);
+        Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
+        for (SGLScreen s : k) {
+            if (s.isVisible() && processors.get(s) != null) {
+                Vector3 unprojected = s.unproject(new Vector3(screenX, screenY, 0));
+                processors.get(s).touchDragged((int) unprojected.x, (int) unprojected.y, pointer);
+            }
+        }
         return false;
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Set<SGLScreen> k = new HashSet(processors.keySet());
-        for (SGLScreen s : k)
-            if (s.isVisible() && processors.get(s) != null) processors.get(s).mouseMoved(screenX, screenY);
+        Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
+        for (SGLScreen s : k) {
+            if (s.isVisible() && processors.get(s) != null) {
+                Vector3 unprojected = s.unproject(new Vector3(screenX, screenY, 0));
+                processors.get(s).mouseMoved((int) unprojected.x, (int) unprojected.y);
+            }
+        }
         return false;
     }
 
     @Override
     public boolean scrolled(int amount) {
-        Set<SGLScreen> k = new HashSet(processors.keySet());
-        for (SGLScreen s : k)
-            if (s.isVisible() && processors.get(s) != null) processors.get(s).scrolled(amount);
+        Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
+        for (SGLScreen s : k) {
+            if (s.isVisible() && processors.get(s) != null) {
+                processors.get(s).scrolled(amount);
+            }
+        }
         return false;
     }
 }

@@ -8,9 +8,15 @@
 
 package de.caffeineaddicted.sgl.types;
 
+import com.badlogic.gdx.utils.reflect.ClassReflection;
 import de.caffeineaddicted.sgl.impl.exceptions.DataObjectIsNullException;
+import de.caffeineaddicted.sgl.impl.exceptions.DuplicateReferenceNameException;
+import de.caffeineaddicted.sgl.impl.exceptions.SGLTypeCastException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Malte Heinzelmann
@@ -45,7 +51,7 @@ public abstract class SGLType<T extends Object> extends SGLObject {
      */
     public void ref(String name, SGLType<?> v) {
         if (references.containsKey(name)) {
-            throw new DuplicateFormatFlagsException(name);
+            throw new DuplicateReferenceNameException(name);
         }
         references.put(name, v);
         v.addRef(this);
@@ -163,12 +169,12 @@ public abstract class SGLType<T extends Object> extends SGLObject {
      * @return Us or our data as type or null if it isn't possible
      */
     public <T2> T2 to(Class<T2> toClass) {
-        if (toClass.isInstance(this)) {
+        if (ClassReflection.isInstance(toClass, this)) {
             return (T2) this;
-        } else if (toClass.isInstance(get())) {
+        } else if (ClassReflection.isInstance(toClass, get())) {
             return (T2) get();
         }
-        return null;
+        throw new SGLTypeCastException(this, get(), toClass);
     }
 
     /**
@@ -186,7 +192,7 @@ public abstract class SGLType<T extends Object> extends SGLObject {
     }
 
     /**
-     * Signals us to update ourself because a variable we reference has changed
+     * Signals us to update us because a variable we reference has changed
      *
      * @param stack A stack with variables that were updated in this process already
      */

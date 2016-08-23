@@ -11,6 +11,7 @@ package de.caffeineaddicted.sgl.ui.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import de.caffeineaddicted.sgl.SGL;
 import de.caffeineaddicted.sgl.SGLGame;
 
 /**
@@ -21,21 +22,21 @@ public abstract class SGLStagedScreen<T extends SGLGame> extends SGLScreen<T> {
     private boolean dimBackground;
     private float dimFactor;
 
-    public SGLStagedScreen(T game) {
-        super(game);
+    public void act(float delta) {
+        stage.act(delta);
     }
 
-    public void render(float delta) {
+    public void draw() {
         if (dimBackground) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            game.getShapeRenderer().begin(ShapeRenderer.ShapeType.Filled);
-            game.getShapeRenderer().setColor(0f, 0f, 0f, dimFactor > 0 ? Math.max(1f, dimFactor) : Math.max(0f, dimFactor));
-            game.getShapeRenderer().rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            game.getShapeRenderer().end();
+            SGL.game().provide(ShapeRenderer.class).begin(ShapeRenderer.ShapeType.Filled);
+            SGL.game().provide(ShapeRenderer.class).setColor(0f, 0f, 0f, dimFactor > 0 ? Math.max(1f, dimFactor) : Math.max(0f, dimFactor));
+            SGL.game().provide(ShapeRenderer.class).rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            SGL.game().provide(ShapeRenderer.class).end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
-        stage.render(delta);
+        stage.draw();
     }
 
     public void create() {

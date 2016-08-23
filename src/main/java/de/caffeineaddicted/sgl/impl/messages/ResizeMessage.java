@@ -13,6 +13,14 @@ import de.caffeineaddicted.sgl.messages.Message;
 /**
  * @author Malte Heinzelmann
  */
-public class DefaultMessage extends Message {
+public class ResizeMessage extends Message {
 
+    public final static String BUNDLE_WIDTH = "ResizeMessageBundleWidth";
+    public final static String BUNDLE_HEIGHT = "ResizeMessageBundleHeight";
+
+    public ResizeMessage(int width, int height) {
+        super();
+        put(BUNDLE_WIDTH, width);
+        put(BUNDLE_HEIGHT, height);
+    }
 }

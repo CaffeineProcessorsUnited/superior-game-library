@@ -6,12 +6,13 @@
  *  stuff is worth it, you can buy me a beer in return.          malte@hnzlmnn.de
  */
 
-package de.caffeineaddicted.sgl.ui.screens;
+package de.caffeineaddicted.sgl.impl.messages;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import de.caffeineaddicted.sgl.messages.Message;
 
 /**
  * @author Malte Heinzelmann
  */
-public class SGLStage extends Stage {
+public class PauseMessage extends Message {
+
 }
