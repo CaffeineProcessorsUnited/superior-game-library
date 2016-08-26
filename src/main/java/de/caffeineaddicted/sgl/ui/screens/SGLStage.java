@@ -9,10 +9,8 @@
 package de.caffeineaddicted.sgl.ui.screens;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import de.caffeineaddicted.sgl.SGL;
 
 /**
  * @author Malte Heinzelmann

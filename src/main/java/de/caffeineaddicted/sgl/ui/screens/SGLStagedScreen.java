@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import de.caffeineaddicted.sgl.SGL;
 import de.caffeineaddicted.sgl.SGLGame;
 import de.caffeineaddicted.sgl.impl.exceptions.ProvidedObjectIsNullException;
+import de.caffeineaddicted.sgl.input.SGLScreenInputMultiplexer;
 
 /**
  * @author Malte Heinzelmann
@@ -45,6 +46,11 @@ public abstract class SGLStagedScreen<T extends SGLGame> extends SGLScreen<T> {
             }
         }
         camera = stage.getCamera();
+        try {
+            SGL.provide(SGLScreenInputMultiplexer.class).addProcessor(this, stage);
+        } catch (ProvidedObjectIsNullException pone) {
+            // don't register stage as InputProcessor
+        }
     }
 
     @Override
