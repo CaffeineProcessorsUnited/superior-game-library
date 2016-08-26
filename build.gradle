@@ -20,7 +20,15 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'application'
 
-sourceCompatibility = 1.6
+compileJava {
+    sourceCompatibility = 1.6
+    //enable compilation in a separate daemon process
+    options.fork = true
+    //enable incremental compilation
+    options.incremental = true
+    options.compilerArgs.addAll(['-Xlint:unchecked'])
+}
+
 
 File deployPath = file("../maven/")
 mainClassName = 'de.caffeineaddicted.sgl.Main'

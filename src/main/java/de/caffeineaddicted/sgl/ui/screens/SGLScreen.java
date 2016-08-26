@@ -33,7 +33,10 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen {
         visible = false;
         created = false;
         dirty = true;
-        camera = new OrthographicCamera();
+        create();
+        if (camera == null) {
+            camera = new OrthographicCamera();
+        }
     }
 
     /**
@@ -156,10 +159,10 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen {
 
     /**
      * Projects world coordinates to screen coordinates.
-     * {@see Camera#project(Vector3)}
      *
      * @param worldCoordinates {@link Vector3 Vector3} with the coordinates in the world
      * @return {@link Vector3 Vector3} with the coordinates on screen
+     * @see Camera#project(Vector3)
      */
     public final Vector3 project(Vector3 worldCoordinates) {
         if (camera == null) {
@@ -170,10 +173,10 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen {
 
     /**
      * Projects screen coordinates to world coordinates.
-     * {@see Camera#unproject(Vector3)}
      *
      * @param screenCoordinates {@link Vector3 Vector3} with the coordinates on screen
      * @return {@link Vector3 Vector3} with the coordinates in the world
+     * @see Camera#unproject(Vector3)
      */
     public final Vector3 unproject(Vector3 screenCoordinates) {
         if (camera == null) {

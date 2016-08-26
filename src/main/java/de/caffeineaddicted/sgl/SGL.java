@@ -8,6 +8,7 @@
 
 package de.caffeineaddicted.sgl;
 
+import com.badlogic.gdx.utils.reflect.ClassReflection;
 import de.caffeineaddicted.sgl.impl.exceptions.GameAlreadyInitializedException;
 import de.caffeineaddicted.sgl.impl.exceptions.GameNotInitializedException;
 import de.caffeineaddicted.sgl.messages.Message;
@@ -27,11 +28,17 @@ public class SGL {
     private static Map<Class<? extends Message>, ArrayList<MessageReceiver>> messageReceivers = new HashMap<Class<? extends Message>, ArrayList<MessageReceiver>>();
 
     public static SGLGame game() {
+        if (game == null) {
+            throw new GameNotInitializedException();
+        }
         return game;
     }
 
     public static <T extends SGLGame> T game(Class<T> c) {
-        return (T) game;
+        if (game == null) {
+            throw new GameNotInitializedException();
+        }
+        return c.cast(game);
     }
 
     public static <T extends SGLGame> void game(T g) {
@@ -42,14 +49,14 @@ public class SGL {
     }
 
     public static <T> boolean provides(Class<T> key) {
-        if (game != null) {
+        if (game == null) {
             throw new GameNotInitializedException();
         }
         return game.provides(key);
     }
 
     public static <T> T provide(Class<T> key) {
-        if (game != null) {
+        if (game == null) {
             throw new GameNotInitializedException();
         }
         return game.provide(key);

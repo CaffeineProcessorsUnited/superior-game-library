@@ -53,43 +53,36 @@ public abstract class SGLGame extends MessageBasedGame implements Provider, Appl
 
     protected abstract void startGame();
 
-    public String getLogTag(String sub) {
-        return "SGL" + (!sub.isEmpty() ? ":" + sub : "");
+    public String getAppName() {
+        return "SGL";
     }
 
-    public void log(String message) {
-        Gdx.app.log("", message);
+    public String getLogTag(String... sub) {
+        String append = "";
+        for (String s: sub) {
+            append += (s.isEmpty() ? "" : ": " + s);
+        }
+        return getAppName() + append;
     }
 
-    public void log(String sub, String message) {
+    public void log(String message, String... sub) {
         Gdx.app.log(getLogTag(sub), message);
     }
 
-    public void debug(String message) {
-        debug("", message);
-    }
-
-    public void debug(String sub, String message) {
+    public void debug(String message, String... sub) {
         Gdx.app.debug(getLogTag(sub), message);
     }
 
-    public void error(String message) {
-        error("", message);
-    }
-
-    public void error(String sub, String message) {
+    public void error(String message, String... sub) {
         Gdx.app.error(getLogTag(sub), message);
     }
 
-    public void warning(String message) {
-        error("", message);
+    public void warn(String message, String... sub) {
+        String[] subs = new String[sub.length + 1];
+        subs[0] = "WARN";
+        System.arraycopy(sub, 0, subs, 1, sub.length);
+        log(getLogTag(subs), message);
     }
-
-    public void warning(String sub, String message) {
-        log(getLogTag("WARNING: " + sub), message);
-    }
-
-    public abstract Viewport createViewport();
 
     protected final <T> void supply(Class<T> c, T o) {
         providing.put(c, o);
@@ -107,7 +100,7 @@ public abstract class SGLGame extends MessageBasedGame implements Provider, Appl
             throw new ProvidedObjectIsNullException(key);
         }
         if (ClassReflection.isInstance(key, o)) {
-            return (T) o;
+            return key.cast(o);
         }
         throw new ProvidedObjectClassMismatchException(key, o);
     }

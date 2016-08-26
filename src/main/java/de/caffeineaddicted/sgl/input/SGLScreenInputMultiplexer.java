@@ -29,7 +29,6 @@ public class SGLScreenInputMultiplexer implements InputProcessor {
     }
 
     public void addProcessor(SGLScreen screen, InputProcessor processor) {
-        SGL.game().debug(screen.getClass().getSimpleName() + " added Processor " + processor.getClass().getSimpleName());
         if (screen == null) throw new NullPointerException("screen cannot be null");
         if (processor == null) throw new NullPointerException("processor cannot be null");
         processors.put(screen, processor);

@@ -8,10 +8,41 @@
 
 package de.caffeineaddicted.sgl.ui.screens;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import de.caffeineaddicted.sgl.SGL;
 
 /**
  * @author Malte Heinzelmann
  */
 public class SGLStage extends Stage {
+    public SGLStage () {
+        super();
+    }
+
+    public SGLStage(Viewport viewport) {
+        super(viewport);
+    }
+
+    public SGLStage(Viewport viewport, Batch batch) {
+        super(viewport, batch);
+    }
+
+    public float getViewWidth() {
+        return getCamera().viewportWidth;
+    }
+
+    public float getViewHeight() {
+        return getCamera().viewportHeight;
+    }
+
+    public float getViewOrigX() {
+        return getCamera().position.x - (getViewWidth() / 2);
+    }
+
+    public float getViewOrigY() {
+        return getCamera().position.y - (getViewHeight() / 2);
+    }
 }

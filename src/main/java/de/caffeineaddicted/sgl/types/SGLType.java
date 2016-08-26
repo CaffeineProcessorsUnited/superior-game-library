@@ -98,6 +98,7 @@ public abstract class SGLType<T extends Object> extends SGLObject {
         if (references.containsValue(value)) {
             Iterator it = references.entrySet().iterator();
             while (it.hasNext()) {
+                @SuppressWarnings("unchecked")
                 Map.Entry<String, SGLType<?>> pair = (Map.Entry) it.next();
                 if (pair.getValue() == value) {
                     name = pair.getKey();
@@ -170,9 +171,9 @@ public abstract class SGLType<T extends Object> extends SGLObject {
      */
     public <T2> T2 to(Class<T2> toClass) {
         if (ClassReflection.isInstance(toClass, this)) {
-            return (T2) this;
+            return toClass.cast(this);
         } else if (ClassReflection.isInstance(toClass, get())) {
-            return (T2) get();
+            return toClass.cast(get());
         }
         throw new SGLTypeCastException(this, get(), toClass);
     }

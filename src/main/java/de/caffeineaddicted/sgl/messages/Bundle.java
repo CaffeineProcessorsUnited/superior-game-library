@@ -49,11 +49,11 @@ public class Bundle {
     }
 
     public <T> T get(String key, Class<T> type) {
-        return (T) get(key);
+        return type.cast(get(key));
     }
 
     public <T> T get(String key, Class<T> type, T defaultValue) {
-        T value = (T) get(key);
+        T value = type.cast(get(key));
         if (value == null) {
             value = defaultValue;
         }

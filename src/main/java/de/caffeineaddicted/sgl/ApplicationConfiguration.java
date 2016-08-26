@@ -13,39 +13,20 @@ public class ApplicationConfiguration {
     }
 
     public ApplicationConfiguration(ApplicationConfiguration configuration) {
-        for (Attribute a : configuration.attributes.keySet()) {
+        for (Attribute<?> a : configuration.attributes.keySet()) {
             attributes.put(a, configuration.get(a));
         }
     }
 
-    public <T> T get(Attribute attribute) {
-        return (T) attributes.get(attribute);
+    public <T> T get(Attribute<T> attribute) {
+        if (attributes.containsKey(attribute)) {
+            return attribute.type.cast(attributes.get(attribute));
+        }
+        return attribute.defaultValue;
     }
 
-    public <T> T get(Attribute attribute, Class<T> type) {
-        return (T) attributes.get(attribute);
-    }
-
-    public <T> ApplicationConfiguration set(Attribute attribute, T value) {
+    public <T> ApplicationConfiguration set(Attribute<T> attribute, T value) {
         attributes.put(attribute, value);
         return this;
-    }
-
-    public enum Attribute {
-        WIDTH(Integer.class),
-        HEIGHT(Integer.class),;
-
-        public final Class type;
-        public final String name;
-
-        Attribute(Class type) {
-            this.type = type;
-            this.name = name().toLowerCase();
-        }
-
-        Attribute(Class type, String name) {
-            this.type = type;
-            this.name = name;
-        }
     }
 }

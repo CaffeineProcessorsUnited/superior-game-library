@@ -15,6 +15,6 @@ public class Main {
 
     public static void main(String[] args) {
         System.err.println("You can't run this library!");
-        System.exit(1);
+        System.exit(0);
     }
 }

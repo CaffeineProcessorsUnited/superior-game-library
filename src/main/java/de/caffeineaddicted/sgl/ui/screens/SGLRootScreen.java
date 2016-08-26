@@ -97,7 +97,7 @@ public class SGLRootScreen<T extends SGLGame> implements Screen {
     public <T extends SGLScreen> T get(Class<T> screenclass) {
         SGLScreen screen = screens.get(screenclass);
         if (ClassReflection.isInstance(screenclass, screen)) {
-            return (T) screen;
+            return screenclass.cast(screen);
         }
         throw new ScreenNotLoadedException(screenclass);
     }
