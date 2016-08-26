@@ -70,8 +70,13 @@ public class SGL {
     }
 
     public static void message(Message message) {
-        for (MessageReceiver messageReceiver : messageReceivers.get(message.getClass())) {
-            messageReceiver.receiveMessage(message);
+        ArrayList<MessageReceiver> messageReceiverList = messageReceivers.get(message.getClass());
+        if (messageReceiverList != null) {
+            for (MessageReceiver messageReceiver : messageReceivers.get(message.getClass())) {
+                if (messageReceiver != null) {
+                    messageReceiver.receiveMessage(message);
+                }
+            }
         }
     }
 }

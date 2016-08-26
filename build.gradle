@@ -7,7 +7,7 @@
  */
 
 group 'de.caffeineaddicted.sgl'
-version "0.2.0"
+version "0.2.2"
 
 buildscript {
     ext.gdxVersion = "1.9.3"
@@ -22,6 +22,7 @@ apply plugin: 'application'
 
 compileJava {
     sourceCompatibility = 1.6
+    targetCompatibility = 1.6
     //enable compilation in a separate daemon process
     options.fork = true
     //enable incremental compilation
