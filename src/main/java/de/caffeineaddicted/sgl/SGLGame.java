@@ -18,6 +18,7 @@ import de.caffeineaddicted.sgl.input.SGLScreenInputMultiplexer;
 import de.caffeineaddicted.sgl.interfaces.ApplicationConfigurationProvider;
 import de.caffeineaddicted.sgl.interfaces.Provider;
 import de.caffeineaddicted.sgl.messages.MessageBasedGame;
+import de.caffeineaddicted.sgl.ui.interfaces.Creatable;
 import de.caffeineaddicted.sgl.ui.screens.SGLRootScreen;
 
 import java.util.HashMap;
@@ -26,25 +27,38 @@ import java.util.Map;
 /**
  * @author Malte Heinzelmann
  */
-public abstract class SGLGame extends MessageBasedGame implements Provider, ApplicationConfigurationProvider {
+public abstract class SGLGame extends MessageBasedGame implements Provider, Creatable, ApplicationConfigurationProvider {
 
-    protected final InputMultiplexer multiplexer;
+    private boolean created = false;
+    private final InputMultiplexer multiplexer;
     private final Map<Class<?>, Object> providing = new HashMap<Class<?>, Object>();
 
     public SGLGame() {
-        SGL.game(this);
+        this(true);
+    }
+
+    public SGLGame(boolean initializeSGL) {
+        if (initializeSGL) {
+            SGL.game(this);
+        }
         supply(SGLScreenInputMultiplexer.class, new SGLScreenInputMultiplexer());
         supply(SGLRootScreen.class, new SGLRootScreen());
         multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(provide(SGLScreenInputMultiplexer.class));
     }
 
-    public void create() {
+    public final void create() {
+        onCreate();
+        created = true;
         Gdx.input.setInputProcessor(multiplexer);
         setScreen(provide(SGLRootScreen.class));
         initGame();
         initScreens();
         startGame();
+    }
+
+    public final boolean isCreated() {
+        return created;
     }
 
     protected abstract void initGame();
@@ -53,9 +67,7 @@ public abstract class SGLGame extends MessageBasedGame implements Provider, Appl
 
     protected abstract void startGame();
 
-    public String getAppName() {
-        return "SGL";
-    }
+    public abstract String getAppName();
 
     public String getLogTag(String... sub) {
         String append = "";
@@ -103,5 +115,16 @@ public abstract class SGLGame extends MessageBasedGame implements Provider, Appl
             return key.cast(o);
         }
         throw new ProvidedObjectClassMismatchException(key, o);
+    }
+
+    public void toggleFullscreen() {
+        if (Gdx.graphics.isFullscreen()) {
+            Gdx.graphics.setWindowedMode(
+                    config().get(AttributeList.WIDTH),
+                    config().get(AttributeList.HEIGHT)
+            );
+        } else {
+            Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+        }
     }
 }

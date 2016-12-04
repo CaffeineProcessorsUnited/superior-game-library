@@ -26,6 +26,10 @@ public abstract class Message extends Bundle {
         return this;
     }
 
+    public boolean is(Class<? extends Message> type) {
+        return this.getClass() == type;
+    }
+
     @Override
     public final String toString() {
         return this.getClass().getSimpleName();

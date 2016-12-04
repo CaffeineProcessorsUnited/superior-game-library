@@ -8,9 +8,10 @@
 
 package de.caffeineaddicted.sgl;
 
-import com.badlogic.gdx.utils.reflect.ClassReflection;
 import de.caffeineaddicted.sgl.impl.exceptions.GameAlreadyInitializedException;
 import de.caffeineaddicted.sgl.impl.exceptions.GameNotInitializedException;
+import de.caffeineaddicted.sgl.interfaces.ApplicationConfigurationProvider;
+import de.caffeineaddicted.sgl.interfaces.Provider;
 import de.caffeineaddicted.sgl.messages.Message;
 import de.caffeineaddicted.sgl.messages.MessageReceiver;
 
@@ -79,4 +80,25 @@ public class SGL {
             }
         }
     }
+
+    public static void config() {
+        game().config();
+    }
+
+    public static void log(String message, String... sub) {
+        game().log(message, sub);
+    }
+
+    public static void debug(String message, String... sub) {
+        game().debug(message, sub);
+    }
+
+    public static void error(String message, String... sub) {
+        game().error(message, sub);
+    }
+
+    public static void warn(String message, String... sub) {
+        game().warn(message, sub);
+    }
+
 }

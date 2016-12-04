@@ -43,7 +43,7 @@ public class Bundle {
     public Object get(String key, Object defaultValue) {
         Object value = context.get(key);
         if (value == null) {
-            value = defaultValue;
+            return defaultValue;
         }
         return value;
     }
@@ -53,11 +53,11 @@ public class Bundle {
     }
 
     public <T> T get(String key, Class<T> type, T defaultValue) {
-        T value = type.cast(get(key));
+        Object value = get(key);
         if (value == null) {
-            value = defaultValue;
+            return defaultValue;
         }
-        return value;
+        return type.cast(value);
     }
 
     public Map<String, Object> getAll() {

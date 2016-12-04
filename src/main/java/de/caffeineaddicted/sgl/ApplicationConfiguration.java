@@ -25,6 +25,11 @@ public class ApplicationConfiguration {
         return attribute.defaultValue;
     }
 
+    public <T> ApplicationConfiguration set(Attribute<T> attribute) {
+        attributes.put(attribute, attribute.defaultValue);
+        return this;
+    }
+
     public <T> ApplicationConfiguration set(Attribute<T> attribute, T value) {
         attributes.put(attribute, value);
         return this;

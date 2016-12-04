@@ -9,17 +9,22 @@
 package de.caffeineaddicted.sgl.messages;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 import de.caffeineaddicted.sgl.SGL;
 import de.caffeineaddicted.sgl.impl.messages.DisposeMessage;
 import de.caffeineaddicted.sgl.impl.messages.PauseMessage;
 import de.caffeineaddicted.sgl.impl.messages.ResizeMessage;
 import de.caffeineaddicted.sgl.impl.messages.ResumeMessage;
+import de.caffeineaddicted.sgl.ui.interfaces.Creatable;
+import de.caffeineaddicted.sgl.ui.interfaces.Disposeable;
+import de.caffeineaddicted.sgl.ui.interfaces.Pausable;
 
 /**
  * @author Malte Heinzelmann
  */
-public abstract class MessageBasedGame extends Game {
+public abstract class MessageBasedGame extends Game implements Pausable, Disposeable {
     protected Bundle bundle;
+    private boolean paused = false;
 
     public MessageBasedGame() {
         this(null);
@@ -33,21 +38,31 @@ public abstract class MessageBasedGame extends Game {
     }
 
     @Override
-    public void dispose() {
+    public final void dispose() {
         super.dispose();
+        onDispose();
         SGL.message(new DisposeMessage());
     }
 
     @Override
-    public void pause() {
+    public final void pause() {
         super.pause();
+        onPause();
+        paused = true;
         SGL.message(new PauseMessage());
     }
 
     @Override
-    public void resume() {
+    public final void resume() {
         super.resume();
+        onResume();
+        paused = false;
         SGL.message(new ResumeMessage());
+    }
+
+    @Override
+    public final boolean isPaused() {
+        return paused;
     }
 
     @Override

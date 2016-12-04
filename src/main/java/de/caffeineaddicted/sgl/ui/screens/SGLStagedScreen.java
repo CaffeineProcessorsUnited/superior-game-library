@@ -22,7 +22,7 @@ import de.caffeineaddicted.sgl.input.SGLScreenInputMultiplexer;
  * @author Malte Heinzelmann
  */
 public abstract class SGLStagedScreen<T extends SGLGame> extends SGLScreen<T> {
-    protected SGLStage stage;
+    private SGLStage stage;
     private boolean dimBackground = false;
     private float dimFactor;
 
@@ -60,7 +60,9 @@ public abstract class SGLStagedScreen<T extends SGLGame> extends SGLScreen<T> {
 
     @Override
     public void resize (int width, int height) {
-        stage.getViewport().update(width, height);
+        if (isCreated()) {
+            stage.getViewport().update(width, height);
+        }
     }
 
     @Override
@@ -84,4 +86,9 @@ public abstract class SGLStagedScreen<T extends SGLGame> extends SGLScreen<T> {
     public void setDimFactor(float dimFactor) {
         this.dimFactor = dimFactor;
     }
+
+    public SGLStage stage() {
+        return stage;
+    }
+
 }

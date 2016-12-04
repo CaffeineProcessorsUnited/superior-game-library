@@ -17,11 +17,15 @@ import de.caffeineaddicted.sgl.SGLGame;
 import de.caffeineaddicted.sgl.impl.exceptions.ScreenHasNoCameraException;
 import de.caffeineaddicted.sgl.input.SGLInputProcessor;
 import de.caffeineaddicted.sgl.input.SGLScreenInputMultiplexer;
+import de.caffeineaddicted.sgl.ui.interfaces.Creatable;
+import de.caffeineaddicted.sgl.ui.interfaces.Disposeable;
+import de.caffeineaddicted.sgl.ui.interfaces.Hideable;
+import de.caffeineaddicted.sgl.ui.interfaces.Pausable;
 
 /**
  * @author Malte Heinzelmann
  */
-public abstract class SGLScreen<T extends SGLGame> implements Screen {
+public abstract class SGLScreen<T extends SGLGame> implements Screen, Creatable, Pausable, Hideable, Disposeable {
     protected Camera camera;
     private boolean paused;
     private boolean visible;
@@ -33,7 +37,6 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen {
         visible = false;
         created = false;
         dirty = true;
-        create();
         if (camera == null) {
             camera = new OrthographicCamera();
         }
@@ -51,15 +54,23 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen {
      */
     protected abstract void draw();
 
-    /**
-     * Create all necessary resources used by the screen.
-     */
-    public abstract void create();
+    public void create() {
+        onCreate();
+        created = true;
+    }
 
     /**
      * Sets initial positions according to dimensions.
      */
-    public abstract void beauty();
+    public final void beauty() {
+        onBeauty();
+        dirty = false;
+    };
+
+    /**
+     * Gets called when the screen should be beautified
+     */
+    public abstract void onBeauty();
 
     /**
      * Inform the screen that something has changed and it needs an update.
@@ -69,17 +80,18 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen {
     }
 
     @Override
-    public void show() {
+    public final void show() {
         if (!isCreated()) {
             create();
-            created = true;
         }
+        onShow();
         visible = true;
         SGL.game().debug(getClass().getSimpleName(), "visible=" + (visible ? "true" : "false"));
     }
 
     @Override
-    public void hide() {
+    public final void hide() {
+        onHide();
         visible = false;
         SGL.game().debug(getClass().getSimpleName(), "visible=" + (visible ? "true" : "false"));
     }
@@ -103,12 +115,14 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen {
     }
 
     @Override
-    public void pause() {
+    public final void pause() {
+        onPause();
         paused = true;
     }
 
     @Override
-    public void resume() {
+    public final void resume() {
+        onResume();
         paused = false;
     }
 
@@ -117,7 +131,7 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen {
      *
      * @return true if the screen was created
      */
-    public boolean isCreated() {
+    public final boolean isCreated() {
         return created;
     }
 
@@ -126,7 +140,7 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen {
      *
      * @return true if the screen is paused
      */
-    public boolean isPaused() {
+    public final boolean isPaused() {
         return paused;
     }
 
@@ -135,7 +149,7 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen {
      *
      * @return true if the screen is visible
      */
-    public boolean isVisible() {
+    public final boolean isVisible() {
         return visible;
     }
 
@@ -144,7 +158,7 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen {
      *
      * @return true if the screen entities need to be updated
      */
-    public boolean isDirty() {
+    public final boolean isDirty() {
         return dirty;
     }
 
@@ -154,7 +168,7 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen {
      * @param processor {@link SGLInputProcessor SGLInputProcessor}
      */
     public final void registerInputListener(SGLInputProcessor processor) {
-        SGL.game().provide(SGLScreenInputMultiplexer.class).addProcessor(this, processor);
+        SGL.provide(SGLScreenInputMultiplexer.class).addProcessor(this, processor);
     }
 
     /**

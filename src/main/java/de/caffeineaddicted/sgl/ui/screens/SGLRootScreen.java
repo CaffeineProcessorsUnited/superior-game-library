@@ -10,6 +10,7 @@ package de.caffeineaddicted.sgl.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import de.caffeineaddicted.sgl.SGL;
 import de.caffeineaddicted.sgl.SGLGame;
@@ -132,6 +133,8 @@ public class SGLRootScreen<T extends SGLGame> implements Screen {
      * Renders all currently active screens. Lower index gets drawn to the background.
      */
     public void render(float delta, boolean forceRender) {
+        Gdx.gl.glClearColor(.0f, .0f, .0f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         if (paused && !renderWhilePasued && !forceRender) {
             return;
         }
