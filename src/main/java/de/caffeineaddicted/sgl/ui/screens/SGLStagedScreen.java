@@ -58,9 +58,19 @@ public abstract class SGLStagedScreen<T extends SGLGame> extends SGLScreen<T> {
         onCreate();
     }
 
+    public void onBeforeAct(float delta) {
+
+    }
+
     @Override
     protected final void act(float delta) {
+        onBeforeAct(delta);
         stage.act(delta);
+        onAfterAct(delta);
+    }
+
+    public void onAfterAct(float delta) {
+
     }
 
     @Override
@@ -70,8 +80,13 @@ public abstract class SGLStagedScreen<T extends SGLGame> extends SGLScreen<T> {
         }
     }
 
+    public void onBeforeDraw() {
+
+    }
+
     @Override
     protected final void draw() {
+        onBeforeDraw();
         if (dimBackground) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -82,6 +97,11 @@ public abstract class SGLStagedScreen<T extends SGLGame> extends SGLScreen<T> {
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
         stage.draw();
+        onAfterDraw();
+    }
+
+    public void onAfterDraw() {
+
     }
 
     public void setDimBackground(boolean dimBackground) {

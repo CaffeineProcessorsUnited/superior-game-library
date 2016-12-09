@@ -5,9 +5,11 @@ package de.caffeineaddicted.sgl.ui.interfaces;
  */
 public interface Renderable {
 
-    void onAct(float delta);
+    void onBeforeAct(float delta);
+    void onAfterAct(float delta);
 
-    void onDraw();
+    void onBeforeDraw();
+    void onAfterDraw();
 
     void render(float delta);
 }
