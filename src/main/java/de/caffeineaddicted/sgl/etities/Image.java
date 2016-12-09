@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TransformDrawable;
 import de.caffeineaddicted.sgl.SGL;
-import de.caffeineaddicted.sgl.utils.Assets;
+import de.caffeineaddicted.sgl.utils.SGLAssets;
 
 /**
  * @author Malte Heinzelmann
@@ -22,7 +22,7 @@ public class Image extends Actor {
     }
 
     public Image(String texture) {
-        this(SGL.provide(Assets.class).get(texture, Texture.class));
+        this(SGL.provide(SGLAssets.class).get(texture, Texture.class));
     }
 
     /**

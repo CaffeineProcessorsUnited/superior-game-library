@@ -18,11 +18,12 @@ import de.caffeineaddicted.sgl.impl.messages.ResumeMessage;
 import de.caffeineaddicted.sgl.ui.interfaces.Creatable;
 import de.caffeineaddicted.sgl.ui.interfaces.Disposeable;
 import de.caffeineaddicted.sgl.ui.interfaces.Pausable;
+import de.caffeineaddicted.sgl.ui.interfaces.Resizable;
 
 /**
  * @author Malte Heinzelmann
  */
-public abstract class MessageBasedGame extends Game implements Pausable, Disposeable {
+public abstract class MessageBasedGame extends Game implements Pausable, Disposeable, Resizable {
     protected Bundle bundle;
     private boolean paused = false;
 
@@ -38,14 +39,14 @@ public abstract class MessageBasedGame extends Game implements Pausable, Dispose
     }
 
     @Override
-    public final void dispose() {
+    public void dispose() {
         super.dispose();
         onDispose();
         SGL.message(new DisposeMessage());
     }
 
     @Override
-    public final void pause() {
+    public void pause() {
         super.pause();
         onPause();
         paused = true;
@@ -53,7 +54,7 @@ public abstract class MessageBasedGame extends Game implements Pausable, Dispose
     }
 
     @Override
-    public final void resume() {
+    public void resume() {
         super.resume();
         onResume();
         paused = false;
@@ -68,6 +69,7 @@ public abstract class MessageBasedGame extends Game implements Pausable, Dispose
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
+        onResize(width, height);
         SGL.message(new ResizeMessage(width, height));
     }
 

@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import de.caffeineaddicted.sgl.SGL;
-import de.caffeineaddicted.sgl.utils.Assets;
+import de.caffeineaddicted.sgl.utils.SGLAssets;
 
 /**
  * @author Malte Heinzelmann
@@ -55,7 +55,7 @@ public class ImageButton extends Image {
 
 
     public static ImageButton createImageButton(String[]... names) {
-        Assets assets = SGL.game().provide(Assets.class);
+        SGLAssets assets = SGL.game().provide(SGLAssets.class);
         Texture[][] textures = new Texture[names.length][];
         for (int i = 0; i < names.length; i++) {
             textures[i] = new Texture[names[i].length];
@@ -96,7 +96,7 @@ public class ImageButton extends Image {
         }
         return drawables[new DrawableSelection() {
             public int select(ImageButton button) {
-                return (button.hovered) ? 1 : 0;
+                return (button.isHovered()) ? 1 : 0;
             }
         }.select(this)];
     }

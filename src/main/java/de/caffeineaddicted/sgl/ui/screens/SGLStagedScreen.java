@@ -16,7 +16,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import de.caffeineaddicted.sgl.SGL;
 import de.caffeineaddicted.sgl.SGLGame;
 import de.caffeineaddicted.sgl.impl.exceptions.ProvidedObjectIsNullException;
+import de.caffeineaddicted.sgl.impl.messages.ResizeMessage;
 import de.caffeineaddicted.sgl.input.SGLScreenInputMultiplexer;
+import de.caffeineaddicted.sgl.messages.Message;
+import de.caffeineaddicted.sgl.messages.MessageReceiver;
 
 /**
  * @author Malte Heinzelmann
@@ -27,7 +30,8 @@ public abstract class SGLStagedScreen<T extends SGLGame> extends SGLScreen<T> {
     private float dimFactor;
 
     @Override
-    public void create() {
+    public final void create() {
+        super.create();
         Viewport viewport = null;
         SpriteBatch batch = null;
         try {
@@ -51,10 +55,11 @@ public abstract class SGLStagedScreen<T extends SGLGame> extends SGLScreen<T> {
         } catch (ProvidedObjectIsNullException pone) {
             // don't register stage as InputProcessor
         }
+        onCreate();
     }
 
     @Override
-    public void act(float delta) {
+    protected final void act(float delta) {
         stage.act(delta);
     }
 
@@ -66,7 +71,7 @@ public abstract class SGLStagedScreen<T extends SGLGame> extends SGLScreen<T> {
     }
 
     @Override
-    public void draw() {
+    protected final void draw() {
         if (dimBackground) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -89,6 +94,14 @@ public abstract class SGLStagedScreen<T extends SGLGame> extends SGLScreen<T> {
 
     public SGLStage stage() {
         return stage;
+    }
+
+    public float getViewWidth() {
+        return stage.getViewWidth();
+    }
+
+    public float getViewHeight() {
+        return stage.getViewHeight();
     }
 
 }

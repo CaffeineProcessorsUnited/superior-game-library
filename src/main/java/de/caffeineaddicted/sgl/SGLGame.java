@@ -14,6 +14,10 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.caffeineaddicted.sgl.impl.exceptions.ProvidedObjectClassMismatchException;
 import de.caffeineaddicted.sgl.impl.exceptions.ProvidedObjectIsNullException;
+import de.caffeineaddicted.sgl.impl.messages.DisposeMessage;
+import de.caffeineaddicted.sgl.impl.messages.PauseMessage;
+import de.caffeineaddicted.sgl.impl.messages.ResizeMessage;
+import de.caffeineaddicted.sgl.impl.messages.ResumeMessage;
 import de.caffeineaddicted.sgl.input.SGLScreenInputMultiplexer;
 import de.caffeineaddicted.sgl.interfaces.ApplicationConfigurationProvider;
 import de.caffeineaddicted.sgl.interfaces.Provider;
@@ -126,5 +130,28 @@ public abstract class SGLGame extends MessageBasedGame implements Provider, Crea
         } else {
             Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
         }
+    }
+    @Override
+    public final void dispose() {
+        super.dispose();
+        provide(SGLRootScreen.class).dispose();
+    }
+
+    @Override
+    public final void pause() {
+        super.pause();
+        provide(SGLRootScreen.class).pause();
+    }
+
+    @Override
+    public final void resume() {
+        super.resume();
+        provide(SGLRootScreen.class).resume();
+    }
+
+    @Override
+    public final void resize(int width, int height) {
+        super.resize(width, height);
+        provide(SGLRootScreen.class).resize(width, height);
     }
 }

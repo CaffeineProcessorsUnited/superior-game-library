@@ -2,7 +2,7 @@ package de.caffeineaddicted.sgl.etities;
 
 import com.badlogic.gdx.graphics.Texture;
 import de.caffeineaddicted.sgl.SGL;
-import de.caffeineaddicted.sgl.utils.Assets;
+import de.caffeineaddicted.sgl.utils.SGLAssets;
 import de.caffeineaddicted.sgl.utils.MathUtils;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ abstract public class Entity extends Group {
     }
 
     public String addTexture(String name, String texture) {
-        return addTexture(name, SGL.provide(Assets.class).get(texture, Texture.class));
+        return addTexture(name, SGL.provide(SGLAssets.class).get(texture, Texture.class));
     }
 
     public String addTexture(String name, Texture texture) {

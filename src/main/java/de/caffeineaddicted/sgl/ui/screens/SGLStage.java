@@ -53,13 +53,13 @@ public class SGLStage extends Stage implements Creatable {
 
     @Override
     public final void create() {
+        root = new Group();
+        root.stage(this);
         onCreate();
         created = true;
     }
 
     public void onCreate() {
-        root = new Group();
-        root.stage(this);
     }
 
     @Override
@@ -70,34 +70,58 @@ public class SGLStage extends Stage implements Creatable {
     @Override
     public void clear() {
         super.clear();
+        if (!isCreated()) {
+            create();
+        }
         root.clear();
     }
 
     public String addActor(Actor a) {
+        if (!isCreated()) {
+            create();
+        }
         return root.addActor(a);
     }
 
     public String addActor(String name, Actor a) {
+        if (!isCreated()) {
+            create();
+        }
         return root.addActor(name, a);
     }
 
     public Actor getActor(String name) {
+        if (!isCreated()) {
+            create();
+        }
         return (Actor) root.getActor(name);
     }
 
     public <T> T getActor(String name, Class<T> type) {
+        if (!isCreated()) {
+            create();
+        }
         return type.cast(root.getActor(name));
     }
 
     public void removeActor(Actor a) {
+        if (!isCreated()) {
+            create();
+        }
         root.removeActor(a);
     }
 
     public void act(float delta) {
+        if (!isCreated()) {
+            create();
+        }
         root.act(delta);
     }
 
     public void draw() {
+        if (!isCreated()) {
+            create();
+        }
         Camera camera = getViewport().getCamera();
         camera.update();
 
