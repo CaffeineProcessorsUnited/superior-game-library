@@ -17,15 +17,12 @@ import de.caffeineaddicted.sgl.SGLGame;
 import de.caffeineaddicted.sgl.impl.exceptions.ScreenHasNoCameraException;
 import de.caffeineaddicted.sgl.input.SGLInputProcessor;
 import de.caffeineaddicted.sgl.input.SGLScreenInputMultiplexer;
-import de.caffeineaddicted.sgl.ui.interfaces.Creatable;
-import de.caffeineaddicted.sgl.ui.interfaces.Disposeable;
-import de.caffeineaddicted.sgl.ui.interfaces.Hideable;
-import de.caffeineaddicted.sgl.ui.interfaces.Pausable;
+import de.caffeineaddicted.sgl.ui.interfaces.*;
 
 /**
  * @author Malte Heinzelmann
  */
-public abstract class SGLScreen<T extends SGLGame> implements Screen, Creatable, Pausable, Hideable, Disposeable {
+public abstract class SGLScreen<T extends SGLGame> implements Screen, Creatable, Pausable, Hideable, Disposeable, Renderable {
     protected Camera camera;
     private boolean paused;
     private boolean visible;
