@@ -52,6 +52,7 @@ public class Group extends Actor {
 
     @Override
     public void act(float delta) {
+        super.act(delta);
         for (String n : children.keySet()) {
             children.get(n).act(delta);
         }
