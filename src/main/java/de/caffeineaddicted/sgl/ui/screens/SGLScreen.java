@@ -52,7 +52,6 @@ public abstract class SGLScreen<T extends SGLGame> implements Screen, Creatable,
     protected abstract void draw();
 
     public void create() {
-        onCreate();
         created = true;
     }
 
