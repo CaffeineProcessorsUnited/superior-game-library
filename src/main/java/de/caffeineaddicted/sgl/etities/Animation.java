@@ -18,11 +18,11 @@ public class Animation extends Image {
 
 
     public Animation(Texture texture, int count, int width, int height) {
+        frameDuration = 0.12f;
         splitTexture(texture, count, width, height);
         setWidth(width);
         setHeight(height);
         loop = true;
-        frameDuration = 0.12f;
     }
 
     public Animation(Texture texture, int count, int width, int height, boolean loop) {
@@ -78,6 +78,7 @@ public class Animation extends Image {
 
     public void setFrameDuration(float duration) {
         frameDuration = duration;
+        animationChanged();
     }
 
     public void setAnimationDuration(float duration) {

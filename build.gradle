@@ -7,7 +7,7 @@
  */
 
 group 'de.caffeineaddicted.sgl'
-version "0.3.4"
+version "0.3.5"
 
 buildscript {
     ext.gdxVersion = "1.9.3"
