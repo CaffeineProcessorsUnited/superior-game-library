@@ -9,11 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public class Animation extends Image {
 
     private Drawable[] frames;
-    private float frameDuration = 0.12f;
+    private float frameDuration;
     private float animationDuration;
     private float time = 0;
     private boolean loop;
-    private boolean done = true;
+    private boolean done = false;
+    private boolean paused = true;
 
 
     public Animation(Texture texture, int count, int width, int height) {
@@ -21,6 +22,7 @@ public class Animation extends Image {
         setWidth(width);
         setHeight(height);
         loop = true;
+        frameDuration = 0.12f;
     }
 
     public Animation(Texture texture, int count, int width, int height, boolean loop) {
@@ -65,14 +67,44 @@ public class Animation extends Image {
 
     @Override
     public void act(float delta) {
+        if (paused) {
+            return;
+        }
         time += delta;
         while (time >= animationDuration && animationDuration > 0) {
             time -= animationDuration;
         }
     }
 
-    public void triggerAnimation() {
+    public void setFrameDuration(float duration) {
+        frameDuration = duration;
+    }
+
+    public void setAnimationDuration(float duration) {
+        if (frames.length > 1) {
+            frameDuration = animationDuration / frames.length;
+        }
+    }
+
+    public void stop() {
+        done = true;
+    }
+
+    public void reset() {
         done = false;
+    }
+
+    public void pause() {
+        paused = true;
+    }
+
+    public void resume() {
+        paused = false;
+    }
+
+    public void restart() {
+        reset();
+        resume();
     }
 
 
