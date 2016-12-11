@@ -112,6 +112,7 @@ public class SGLStage extends Stage implements Creatable {
     }
 
     public void act(float delta) {
+        super.act(delta);
         if (!isCreated()) {
             create();
         }
@@ -119,6 +120,7 @@ public class SGLStage extends Stage implements Creatable {
     }
 
     public void draw() {
+        super.draw();
         if (!isCreated()) {
             create();
         }
