@@ -26,7 +26,7 @@ import java.util.Map;
 public class SGL {
 
     private static SGLGame game = null;
-    private static Map<Class<? extends Message>, ArrayList<MessageReceiver>> messageReceivers = new HashMap<Class<? extends Message>, ArrayList<MessageReceiver>>();
+    private static Map<Class<? extends Message>, ArrayList<MessageReceiver<? extends Message>>> messageReceivers = new HashMap<Class<? extends Message>, ArrayList<MessageReceiver<? extends Message>>>();
 
     public static SGLGame game() {
         if (game == null) {
@@ -63,19 +63,25 @@ public class SGL {
         return game.provide(key);
     }
 
-    public static void registerMessageReceiver(Class<? extends Message> messageType, MessageReceiver messageReceiver) {
+    public static <T extends Message> void registerMessageReceiver(Class<T> messageType, MessageReceiver<T> messageReceiver) {
         if (messageReceivers.get(messageType) == null) {
-            messageReceivers.put(messageType, new ArrayList<MessageReceiver>());
+            messageReceivers.put(messageType, new ArrayList<MessageReceiver<? extends Message>>());
         }
         messageReceivers.get(messageType).add(messageReceiver);
     }
 
-    public static void message(Message message) {
-        ArrayList<MessageReceiver> messageReceiverList = messageReceivers.get(message.getClass());
+    public static <T extends Message> void message(T message) {
+        ArrayList<MessageReceiver<? extends Message>> messageReceiverList = messageReceivers.get(message.getClass());
         if (messageReceiverList != null) {
             for (MessageReceiver messageReceiver : messageReceivers.get(message.getClass())) {
                 if (messageReceiver != null) {
-                    messageReceiver.receiveMessage(message);
+                    MessageReceiver<T> receiver;
+                    try {
+                        receiver = ((MessageReceiver<T>) messageReceiver);
+                        messageReceiver.receiveMessage(message);
+                    } catch (ClassCastException cce) {
+                        SGL.error("Couldn't cast the messageReceiver " + messageReceiver.getClass().getSimpleName() + " into message receiver for " + message.getClass().getSimpleName() + "!");
+                    }
                 }
             }
         }

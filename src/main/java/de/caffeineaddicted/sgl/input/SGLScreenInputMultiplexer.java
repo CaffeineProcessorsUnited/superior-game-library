@@ -22,6 +22,7 @@ import java.util.Set;
  * @author Malte Heinzelmann
  */
 public class SGLScreenInputMultiplexer implements InputProcessor {
+    private boolean debug = false;
     private Map<SGLScreen, InputProcessor> processors;
 
     public SGLScreenInputMultiplexer() {
@@ -31,12 +32,22 @@ public class SGLScreenInputMultiplexer implements InputProcessor {
     public void addProcessor(SGLScreen screen, InputProcessor processor) {
         if (screen == null) throw new NullPointerException("screen cannot be null");
         if (processor == null) throw new NullPointerException("processor cannot be null");
+        if (debug) SGL.debug("added processor for screen " + screen.getClass().getSimpleName());
         processors.put(screen, processor);
     }
 
     public void removeProcessor(SGLScreen screen) {
         if (screen == null) throw new NullPointerException("screen cannot be null");
+        if (debug) SGL.debug("deleted processor for screen " + screen.getClass().getSimpleName());
         processors.remove(screen);
+    }
+
+    public final void enableDebugging() {
+        debug = true;
+    }
+
+    public final void disableDebugging() {
+        debug = false;
     }
 
     /**
@@ -59,6 +70,7 @@ public class SGLScreenInputMultiplexer implements InputProcessor {
     }
 
     public boolean keyDown(int keycode) {
+        if (debug) SGL.debug("keyDown(keycode: " + keycode + ")");
         Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
         for (SGLScreen s : k) {
             if (s.isVisible() && processors.get(s) != null) {
@@ -69,6 +81,7 @@ public class SGLScreenInputMultiplexer implements InputProcessor {
     }
 
     public boolean keyUp(int keycode) {
+        if (debug) SGL.debug("keyUp(keycode: " + keycode + ")");
         Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
         for (SGLScreen s : k) {
             if (s.isVisible() && processors.get(s) != null) {
@@ -79,6 +92,7 @@ public class SGLScreenInputMultiplexer implements InputProcessor {
     }
 
     public boolean keyTyped(char character) {
+        if (debug) SGL.debug("keyTyped(character: " + character + ")");
         Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
         for (SGLScreen s : k) {
             if (s.isVisible() && processors.get(s) != null) {
@@ -89,6 +103,7 @@ public class SGLScreenInputMultiplexer implements InputProcessor {
     }
 
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (debug) SGL.debug("touchDown(screenX: " + screenX + ", screenY: " + screenY + ", pointer: " + pointer + ", button: " + button + ")");
         Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
         for (SGLScreen s : k) {
             if (s.isVisible() && processors.get(s) != null) {
@@ -100,6 +115,7 @@ public class SGLScreenInputMultiplexer implements InputProcessor {
     }
 
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (debug) SGL.debug("touchUp(screenX: " + screenX + ", screenY: " + screenY + ", pointer: " + pointer + ", button: " + button + ")");
         Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
         for (SGLScreen s : k) {
             if (s.isVisible() && processors.get(s) != null) {
@@ -111,6 +127,7 @@ public class SGLScreenInputMultiplexer implements InputProcessor {
     }
 
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if (debug) SGL.debug("touchDragged(screenX: " + screenX + ", screenY: " + screenY + ", pointer: " + pointer + ")");
         Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
         for (SGLScreen s : k) {
             if (s.isVisible() && processors.get(s) != null) {
@@ -123,6 +140,7 @@ public class SGLScreenInputMultiplexer implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        if (debug) SGL.debug("mouseMoved(screenX: " + screenX + ", screenY: " + screenY + ")");
         Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
         for (SGLScreen s : k) {
             if (s.isVisible() && processors.get(s) != null) {
@@ -135,6 +153,7 @@ public class SGLScreenInputMultiplexer implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
+        if (debug) SGL.debug("scrolled(amount: " + amount + ")");
         Set<SGLScreen> k = new HashSet<SGLScreen>(processors.keySet());
         for (SGLScreen s : k) {
             if (s.isVisible() && processors.get(s) != null) {
